@@ -1,0 +1,210 @@
+package curso.api.rest.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import curso.api.rest.model.Usuario;
+import curso.api.rest.repository.UsuarioRepository;
+
+@RestController  // arquitetura REST
+@RequestMapping(value = "/usuario")   // essa / é o que vem apos localhost:8080/  no navegador
+public class IndexController {
+	
+	
+	                     // PARA OS EXEMPLOS 1,2 E 3:
+	//@Autowired
+	//private UsuarioRepository usuarioRepository;
+	
+	//@GetMapping(value = "/", produces = "application/json")
+	
+	
+	
+	
+	
+	
+	
+	
+	  // PARA O EXEMPO DO USUARIO REPOSITORY 01 (SEM PASSAR PARAMETRO):
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	
+	
+		
+		@GetMapping(value = "/", produces = "application/json")  // GetMapping - TERÁ O RETORNO EM GET
+		public ResponseEntity<List<Usuario>> usuario (){
+			
+			List<Usuario> list = (List<Usuario>) usuarioRepository.findAll();
+			
+			return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);  // PARA TESTAR DIGITA NO NAVEGADOR: http://localhost:8080/usuario/
+			                                                               // COMO NÃO PASSAMOS PARAMETRO
+			                                                              // ELE RETORNA TODOS OS USUARIOS DO BANCO.
+		}                                              // RODANDO NO POSTMAN: VERBO - GET endereço - http://localhost:8080/usuario/
+	
+	
+	
+	
+	
+	
+	             // PARA O EXEMPO DO USUARIO REPOSITORY 02 (passando o parametro ID):
+	
+	
+	
+	@GetMapping(value = "/{id}", produces = "application/json")
+	public ResponseEntity<Usuario> init(@PathVariable (value = "id") Long id){
+		
+		Optional<Usuario> usuario = usuarioRepository.findById(id);
+		
+		return new ResponseEntity<>(usuario.get(), HttpStatus.OK);  // PARA TESTAR DIGITA NO NAVEGADOR: http://localhost:8080/usuario/10
+		                                                            // ONDE O NUM. 10 É O PARAMETRO ID QUE TEMOS QUE PASSAR PRA ELE BUSCAR NO BANCO
+		                                                            // PASSANDO O PARAMETRO ELE RETORNA SOMENTE O USUARIO COM ID 10
+	}
+	
+	
+	
+	
+	
+	                                     // EXEMPO 01:
+	//public ResponseEntity init(@RequestParam(value = "nome", defaultValue = "Zé das Couve - NOME DEFAULT" ) String nome) {  // parâmetro nome
+		                                                     // se não digitarmos o parametro no navegador, ele recebera o defaultValue
+		
+	//	System.out.println("Parâmetro recebido " + nome);  // vai imprimir no console o parametro digitado
+
+		
+	//	return new ResponseEntity("Olá Usuário REST Spring Boot seu nome é: " + nome, HttpStatus.OK);
+		                                                                            // para rodar temos q startar o projeto,
+		                                                   // ir no navegador e digitar: localhost:8080/usuario/?nome=Ualzem     para rodar a mensagem
+		                                                  //   Mensagem que deve aparecer:   Olá Usuário REST Spring Boot seu nome é: Ualzem
+	//}
+	
+	
+	
+	                                    // EXEMPLO 02 (RETORNANDO 1 USUARIO):
+	public ResponseEntity<Usuario> init(){
+		
+		Usuario usuario = new Usuario();
+		usuario.setId(1L);
+		usuario.setLogin("zedascouve@email.com");
+		usuario.setNome("Zé das Couves");
+		usuario.setSenha("jdkdk696878");
+		
+		return ResponseEntity.ok(usuario);
+	}
+	
+	
+	
+	
+	                                                     // EXEMPO 03 (RETORNANDO 1 lista de usuários):
+	//public ResponseEntity<Usuario> init(){  // retornará 1 json com os dados abaixo:
+	//	Usuario usuario1 = new Usuario();
+	//	usuario1.setId(50L);
+	//	usuario1.setLogin("mezlau@yahoo.com.br");
+	//	usuario1.setNome("Ualzem Campos");
+	//	usuario1.setSenha("1234567");	
+		
+	//	Usuario usuario2 = new Usuario();
+	//	usuario2.setId(10L);
+	//	usuario2.setLogin("lulu@gmail.com");
+	//	usuario2.setNome("Luísa Morato");
+	//	usuario2.setSenha("23567889");
+		
+	//	Usuario usuario3 = new Usuario();
+	//	usuario3.setId(30L);
+	//	usuario3.setLogin("alessandra@bol.com.br");
+	//	usuario3.setNome("Alessandra Campos");
+	//	usuario3.setSenha("xns58fhr1");
+		
+	//	List<Usuario> usuarios = new ArrayList<Usuario>();
+	//	usuarios.add(usuario1);
+	//	usuarios.add(usuario2);
+	//	usuarios.add(usuario3);
+		
+	//	return new ResponseEntity(usuarios, HttpStatus.OK);
+//	}
+      
+	
+	
+	                         // CRIANDO 1 POST PARA SALVAR 1 USUARIO NOVO NO BANCO
+	@PostMapping(value = "/", produces = "application/json")
+	public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario){
+	
+		Usuario usuarioSalvo = usuarioRepository.save(usuario);
+		
+		return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);  // APÓS SALVAR NO BANCO JÁ DÁ O RETORNO LÁ NO POSTMAN
+	
+/* OBS: LÁ NO POSTMAN TEMOS QUE DIGITAR OS DADOS DO NOSSO NOVO CADASTRO ASSIM:
+		                   
+		{
+	    "id": 10,
+	    "login": "mezlau",
+	    "senha": "1234",
+	    "nome": "Ualzem"
+	  }
+	  */
+		
+		// no postman: colocar POST,  body, no body marca raw, onde está Text muda pra JSON
+		
+		
+		      // QUALQUER DÚVIDA ASSISTIR A AULA: Criando nosso serviço POST e efetuando um cadastro de usuário
+		
+	}
+	
+	
+	
+    // CRIANDO 1 PUT PARA ATUALIZAR O BANCO
+@PutMapping(value = "/", produces = "application/json")
+public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario){
+
+	Usuario usuarioSalvo = usuarioRepository.save(usuario);
+	
+	return new ResponseEntity<Usuario>(usuarioSalvo, HttpStatus.OK);  
+	
+	/* LÁ NO POSTMAN TEMOS QUE ESCREVER O CODIGO A SER ALTERADO, E AGORA TEMOS QUE INDICAR A ID TAMBÉM E SELECIONAR PUT:
+	 {
+	    "id": 10,
+	    "login": "mezlau123",
+	    "senha": "1234",
+	    "nome": "Ualzem"
+	  }
+	  
+	  AQUI EU ALTEREI O LOGIN, QUE ERA: mezlau PARA mezlau 123
+	  
+	  */
+
+}
+
+
+
+
+@DeleteMapping(value = "/{id}", produces = "application/text")  // APÓS DELETE RETORNARÁ UM TEXTO NO POSTMAN
+public String delete (@PathVariable("id") Long id) {
+	
+	usuarioRepository.deleteById(id);;
+	
+	return "Usuário " + id +" deletado com sucesso!";  //  ESTA MENSAGEM SERÁ EXIBIDA NO POSTMAN
+	
+	/* LÁ NO POSTMAN TEMOS QUE ESCOLHER METODO DELETE E INDICAR NA URL QUAL SERA A ID DO USUÁRIO QUE SERÁ DELETADO (NO NOSSO CASO SERÁ ID = 3
+	 * FICARÁ ASSIM: http://localhost:8080/usuario/3/
+	 *  */
+	
+}
+
+
+
+}
+
