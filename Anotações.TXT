@@ -299,4 +299,39 @@ O - NO BROWSER DA INTERNET DIGITAMOS: http://localhost:8080/cursospringrestapi/u
 P - SE RODAR COM O SPRING FECHADO, FUNCIONOU.
 
 
+-------------------------------------- GERANDO UM WAR ----------------------------------------------
+
+PARA CRIAR O WAR TEMOS QUE AJUSTAR 2 COISAS:
+
+1º ADICIONAR 1 DEPENDENCIA NO pom.xml:
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId> spring-boot-starter-tomcat </artifactId>
+</dependency>
+
+2º Vamos no nosso arquivo main do projeto e adicionamos 1 extends nele ficando assim:
+public class CursospringrestapiApplication extends SpringBootServletInitializer
+
+
+
+
+01 - VAMOS NO pom.xml E MUDAMOS:<packaging>jar</packaging>  PARA: <packaging>War</packaging>
+02 - NO cmd ENTRAMOS NO HD DO PROJETO: F:
+03 - ENTRAMOS NA PASTA DO PROJETO: F:\JDEV-API-RESTFUL-SPRINGBOOT\Workspace2\cursospringrestapi
+04 - DIGITAMOS O COMANDO PARA CRIAR O WAR: mvn package (ENTER)
+05 - AO FINAL TEM QUE DAR BUILD SUCESS
+06 - AGORA VAMOS RODAR ELE NO SERVIDOR DO Apache Tomcat QUE TEM QUE ESTAR CO C:/
+07 - ENTRAMOS NO bin DO Apache
+08 - CLICAMOS EM STARTUP
+09 - CONFERIMOS SE STARTOU, NO BROWSER DA INTERNET: http://localhost:8080/   
+10 -  TEM Q APARECER A PAGINA DO APACHE TOMCAT - AI DAMOS shutdown nele
+11 - AGORA VAMOS NO target E COPIAMOS O NOSSO ARQUIVO WAR GERADO
+12 - VAMOS NO APACHE/webapps
+13 - COLAMOS ELE LÁ
+14 - ALTERAMOS SEU NOME: cursospringrestapi-0.0.1-SNAPSHOT.war  PARA: cursospringrestapi.war
+15 - STARTAMOS O APACHE NOVAMENTE
+16 - AGORA RODAMOS NO BROWSER: localhost:8080/cursospringrestapi  
+E PARA VER TODOS OS CADASTROS: localhost:8080/cursospringrestapi/usuario
+
+
 

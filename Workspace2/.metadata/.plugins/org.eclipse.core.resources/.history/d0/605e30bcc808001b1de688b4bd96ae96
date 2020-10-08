@@ -11,7 +11,7 @@
 	<groupId>curso.api.rest</groupId>
 	<artifactId>cursospringrestapi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>cursospringrestapi</name>
 	<description>Curso API REST Spring Boot</description>
 
@@ -30,14 +30,6 @@
     <artifactId>postgresql</artifactId>
     <version>9.2-1003-jdbc4</version>
 </dependency>
-
-
-<dependency>
-<groupId>org.springframework.boot</groupId>
-<artifactId> spring-boot-starter-tomcat </artifactId>
-</dependency>
-		
-	
 
 
 
